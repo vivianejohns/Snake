@@ -56,17 +56,18 @@ public class Snake extends Application {
 	private static Stage window;
 	
 	public static final int BLOCK_SIZE = 20;
-	public static final int GAME_WIDTH = 30*BLOCK_SIZE;
-	public static final int GAME_HEIGHT = 20*BLOCK_SIZE;
+	public static  int GAME_WIDTH = 30*BLOCK_SIZE;
+	public static  int GAME_HEIGHT = 20*BLOCK_SIZE;
 	
 	private static double speed = 0.2;					//0,2 Sekunden
-	private static boolean isEndless = false;			//ob man durch den Rand kann oder dagegen stösst
+	private static boolean isEndless = false;			//ob man durch den Rand kann oder dagegen stÃ¶sst
+	private static boolean withObstacles = false;		//ob man mit Hindernissen spielt
 	
 	private Direction direction = Direction.RIGHT;		//Direction.Werte die im ENUM angegeben wurden
 	private boolean moved = false;						//ob sich Schlange bewegt
-	private boolean running = false;					//ob das Spiel läuft
+	private boolean running = false;					//ob das Spiel lÃ¤uft
 	
-	private Timeline timeLine = new Timeline();			//für Animation der Schlange
+	private Timeline timeLine = new Timeline();			//fÃ¼r Animation der Schlange
 	
 	private ObservableList<Node> snake;					//Schlange
 	
@@ -77,12 +78,12 @@ public class Snake extends Application {
 	private int score = 0;
 	private Label scoreLabel = new Label("Score: " + score);
 	
-	private Label info = new Label("Drücke ESC \num das Spiel abzubrechen \nund SPACE \num das Spiel zu pausieren.");
+	private Label info = new Label("DrÃ¼cke ESC \num das Spiel abzubrechen \nund SPACE \num das Spiel zu pausieren.");
 	
 	// Methode um StartScene zu erstellen
 	private BorderPane createStartScene() {
 		BorderPane root = new BorderPane();
-		root.setPadding(new Insets(5,5,5,5));
+		root.setPadding(new Insets(5,15,5,5));
 		Label gameTitle = new Label("",new ImageView(new Image(getClass().getResourceAsStream("/images/snake.png"))));		
 		
 		Button startButton = new Button("Spiel starten");
@@ -99,7 +100,7 @@ public class Snake extends Application {
 		Label settings = new Label("Einstellungen");
 		settings.setFont(Font.font("Arial",FontWeight.BOLD,15));
 		
-		Button gameSpeed = new Button("Level");						//ändert speed variable --> Schnelligkeit der Schlange
+		Button gameSpeed = new Button("Level");						//Ã¤ndert speed variable --> Schnelligkeit der Schlange
 		Label gameSpeedLabel = new Label("Einfach");
 		gameSpeed.setOnAction(e -> {
 			if(speed == 0.2) {
@@ -132,6 +133,43 @@ public class Snake extends Application {
 		});
 		gameBorder.setSelected(true);
 		
+		CheckBox obstacles = new CheckBox(" ");			//Leerzeichen, damit Grafik nicht direkt an Checkbox klebt
+		Label obstaclesLabel = new Label("Hindernisse");
+		obstacles.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldVal, Boolean newVal) {
+				if(obstacles.isSelected()) {
+					ImageView iView = new ImageView(new Image("/images/background.png"));
+					iView.setFitHeight(16);
+					iView.setFitWidth(16);
+					obstacles.setGraphic(iView);
+					obstacles.setGraphicTextGap(10);
+					withObstacles = true;
+				} else {
+					obstacles.setGraphic(null);
+					withObstacles = false;
+				}
+			}
+		});
+		
+		Button gameSize = new Button("GrÃ¶ÃŸe");
+		Label gameSizeLabel = new Label("Normal");
+		gameSize.setOnAction(e-> {
+			if(GAME_WIDTH == 30*BLOCK_SIZE && GAME_HEIGHT == 20*BLOCK_SIZE) {
+				GAME_WIDTH = 40*BLOCK_SIZE;
+				GAME_HEIGHT = 30*BLOCK_SIZE;
+				gameSizeLabel.setText("GroÃŸ");
+			} else if(GAME_WIDTH == 40*BLOCK_SIZE && GAME_HEIGHT == 30*BLOCK_SIZE) {
+				GAME_WIDTH = 20*BLOCK_SIZE;
+				GAME_HEIGHT = 10*BLOCK_SIZE;
+				gameSizeLabel.setText("Klein");
+			} else if(GAME_WIDTH == 20*BLOCK_SIZE && GAME_HEIGHT == 10*BLOCK_SIZE) {
+				GAME_WIDTH = 30*BLOCK_SIZE;
+				GAME_HEIGHT = 20*BLOCK_SIZE;
+				gameSizeLabel.setText("Normal");
+			} 
+		});
+		
 		Label musik = new Label("Musik");
 		musik.setFont(Font.font("Arial",FontWeight.BOLD,15));
 
@@ -150,7 +188,7 @@ public class Snake extends Application {
 		hBox.setAlignment(Pos.CENTER);
 		Separator sep = new Separator();
 		
-		//		volumeSlider.setValue(mediaPlayer.getVolume()*100);
+		volumeSlider.setValue(mediaPlayer.getVolume()*100);
 		volumeSlider.setValue(100);
 		volumeSlider.setShowTickMarks(true);
 		volumeSlider.setMinorTickCount(0);
@@ -160,6 +198,7 @@ public class Snake extends Application {
 		volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+				mediaPlayer.setVolume(volumeSlider.getValue()/100);
 				volumeLabel.setText((int)volumeSlider.getValue()+" %");
 			}
 		});
@@ -167,21 +206,25 @@ public class Snake extends Application {
 		GridPane settingsPane = new GridPane();
 		GridPane.setConstraints(gameSpeed,0,0);
 		GridPane.setConstraints(gameSpeedLabel,1,0);
-		GridPane.setConstraints(gameBorder,0,1);
-		GridPane.setConstraints(gameBorderLabel,1,1);
-		GridPane.setConstraints(musik,0,3);
+		GridPane.setConstraints(gameSize,0,1);
+		GridPane.setConstraints(gameSizeLabel,1,1);
+		GridPane.setConstraints(gameBorder,0,2);
+		GridPane.setConstraints(gameBorderLabel,1,2);
+		GridPane.setConstraints(obstacles,0,3);
+		GridPane.setConstraints(obstaclesLabel,1,3);
+		GridPane.setConstraints(sep,0,4);
+		GridPane.setColumnSpan(sep,2);
+		GridPane.setConstraints(musik,0,5);
 		GridPane.setColumnSpan(musik,2);
 		GridPane.setHalignment(musik,HPos.CENTER);
-		GridPane.setConstraints(hBox,0,4);
+		GridPane.setConstraints(hBox,0,6);
 		GridPane.setColumnSpan(hBox,2);
-		GridPane.setConstraints(sep,0,2);
-		GridPane.setColumnSpan(sep,2);
 		GridPane.setMargin(sep,new Insets(10,0,6,0));
-		GridPane.setConstraints(volumeSlider,1,5);
-		GridPane.setConstraints(volumeLabel,0,5);
+		GridPane.setConstraints(volumeSlider,1,7);
+		GridPane.setConstraints(volumeLabel,0,7);
 		settingsPane.setHgap(10);
 		settingsPane.setVgap(10);
-		settingsPane.getChildren().addAll(gameSpeed,gameSpeedLabel,gameBorder,gameBorderLabel,sep,musik,hBox,volumeSlider,volumeLabel);
+		settingsPane.getChildren().addAll(gameSpeed,gameSpeedLabel,gameBorder,gameBorderLabel,gameSize,gameSizeLabel,obstacles,obstaclesLabel,sep,musik,hBox,volumeSlider,volumeLabel);
 		settingsPane.setAlignment(Pos.CENTER);
 		ColumnConstraints column1Width = new ColumnConstraints(60);
 		ColumnConstraints column2Width = new ColumnConstraints(90);
@@ -219,7 +262,7 @@ public class Snake extends Application {
 			Pane pane = new Pane();
 			Scene helpScene = new Scene(pane,250,300);
 			helpStage.setScene(helpScene);
-			Text helpText = new Text("\nRegeln:\n\nBei diesem Spiel müsst ihr schnell sein. Ihr seid die Schlange im Spielfeld. Diese Schlange könnt ihr mit den Pfeiltasten steuern: rechts, links, oben  und unten. Ihr dürft je nach euren Einstellungen den Rand des Spielfeldes durchqueren oder eure Schlange stirbt bei Berührung. \n\nZiel ist es die Nahrung im Spielfeld aufzusammeln. Durch die Nahrung wird die Schlange nach und nach länger, was das Spiel natürlich schwieriger macht.\n\nAußerdem habt ihr die Auswahl zwischen drei Schwierigkeitslevel, einfach, mittel und schwer.");
+			Text helpText = new Text("\nRegeln:\n\nBei diesem Spiel mÃ¼sst ihr schnell sein. Ihr seid die Schlange im Spielfeld. Diese Schlange kÃ¶nnt ihr mit den Pfeiltasten steuern: rechts, links, oben  und unten. Ihr dÃ¼rft je nach euren Einstellungen den Rand des Spielfeldes durchqueren oder eure Schlange stirbt bei BerÃ¼hrung. \n\nZiel ist es die Nahrung im Spielfeld aufzusammeln. Durch die Nahrung wird die Schlange nach und nach lÃ¤nger, was das Spiel natÃ¼rlich schwieriger macht.\n\nAuÃŸerdem habt ihr die Auswahl zwischen drei Schwierigkeitslevel, einfach, mittel und schwer.");
 			helpText.setWrappingWidth(210);
 			helpText.setTranslateX(10);
 			ScrollBar scrollBar = new ScrollBar();
@@ -253,7 +296,7 @@ public class Snake extends Application {
 	private Pane createGame() {
 		Pane root = new Pane();
 		root.setPrefSize(GAME_WIDTH, GAME_HEIGHT);
-		root.setStyle("-fx-background-image: url(/images/gras.png);"+"-fx-background-size: 20 20;" + "-fx-background-repeat: repeat;"+"-fx-border-color: black;"+"-fx-border-style: solid;"+"-fx-border-width: 2;");
+		root.setStyle("-fx-background-image: url(/images/gras.png);"+"-fx-background-size: 20 20;" + "-fx-background-repeat: repeat;"+"-fx-border-color: red;"+"-fx-border-style: solid;"+"-fx-border-width: 2;");
 		
 		//Schlange
 		Group snakeBody = new Group();
@@ -264,6 +307,16 @@ public class Snake extends Application {
 		Image foodImage = new Image("/images/food.png");
 		ImagePattern imgPat = new ImagePattern(foodImage);
 		food.setFill(imgPat);
+		
+		//Hindernis
+		int number = 5;
+		Rectangle[] obst = new Rectangle[number];
+		if(withObstacles) {
+			createRandomObstacles(obst);
+			for(int i = 0; i<obst.length; i++) {
+				root.getChildren().add(obst[i]);
+			}
+		} 
 		
 		createRandomFood(food);
 		
@@ -314,6 +367,22 @@ public class Snake extends Application {
 				}
 				
 				//Kollision
+				if(withObstacles) {
+					for(int i = 0; i<obst.length; i++) {
+						obst[i].getTranslateX();
+						obst[i].getTranslateY();
+						for(Node rect: snake) {
+							rect = obst[i];
+							if(rect != tail && tail.getTranslateX() == rect.getTranslateX() && tail.getTranslateY() == rect.getTranslateY()) {
+								score = 0;
+								scoreLabel.setText("Score: "+score);
+								restartGame();
+								break;
+							}
+						}
+					}
+				} 
+				
 				for(Node rect: snake) {
 					if(rect != tail && tail.getTranslateX() == rect.getTranslateX() && tail.getTranslateY() == rect.getTranslateY()) {
 						score = 0;
@@ -328,9 +397,9 @@ public class Snake extends Application {
 					gameIsEndless(tail,root);
 				} else {
 					gameIsNotEndless(tail,food);
-				}
+				}				
 				
-				//Essen einsammeln bzw Schlange wird länger
+				//Essen einsammeln bzw Schlange wird lÃ¤nger
 				if(tail.getTranslateX()==food.getTranslateX() && tail.getTranslateY()==food.getTranslateY()) {
 					createRandomFood(food);
 					score += 20;
@@ -345,7 +414,7 @@ public class Snake extends Application {
 		});
 		
 		timeLine.getKeyFrames().add(keyFrame);
-		timeLine.setCycleCount(Timeline.INDEFINITE); 			//Animation läuft unendlich
+		timeLine.setCycleCount(Timeline.INDEFINITE); 			//Animation lÃ¤uft unendlich
 		
 		scoreLabel.setFont(Font.font("Arial",30));
 		scoreLabel.setTranslateX(GAME_WIDTH/2);
@@ -353,6 +422,16 @@ public class Snake extends Application {
 		root.getChildren().addAll(food,snakeBody,scoreLabel);
 		
 		return root;
+	}
+	
+	//Random obstacle spawn
+	private void createRandomObstacles(Rectangle[] obst) {
+		for(int i = 0; i<obst.length; i++) {
+			obst[i] = new Rectangle(BLOCK_SIZE,BLOCK_SIZE);
+			obst[i].setFill(new ImagePattern(new Image("/images/background.png")));
+			obst[i].setTranslateX((int)(Math.random()*(GAME_WIDTH-BLOCK_SIZE*2))/BLOCK_SIZE*BLOCK_SIZE);
+			obst[i].setTranslateY((int)(Math.random()*(GAME_HEIGHT-BLOCK_SIZE*2))/BLOCK_SIZE*BLOCK_SIZE);
+		}
 	}
 	
 	//Random food spawn
@@ -392,6 +471,7 @@ public class Snake extends Application {
 	//startGame
 	private void startGame() {
 		Rectangle head = new Rectangle(BLOCK_SIZE,BLOCK_SIZE);
+		//head.setFill(new ImagePattern(new Image("/images/snakeHead.png")));		//kopf bleibt nicht immer vorne
 		snake.add(head);
 		timeLine.play();
 		running = true;
@@ -446,11 +526,13 @@ public class Snake extends Application {
 					}
 				case SPACE:
 					timeLine.pause();
+					mediaPlayer.pause();
 					scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 						@Override
 						public void handle(KeyEvent arg0) {
 							if(arg0.getCode() == KeyCode.SPACE) {
 								timeLine.playFromStart();
+								mediaPlayer.play();
 								keyPressed(scene);
 							} else if(arg0.getCode() == KeyCode.ESCAPE) {
 								//window.setScene(new Scene(createStartScene(),GAME_WIDTH,GAME_HEIGHT));
@@ -481,12 +563,12 @@ public class Snake extends Application {
 		Media media = new Media(fileUrl.toString());
 		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.play();
-		//		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); 			//spielt die Musik unendlich ab
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); 			//spielt die Musik unendlich ab
 	}
 	@Override
 	public void init() throws Exception {
 		String musicFile = "/music/snakeMusic.mp3";
-		//		playMusic(musicFile);
+		playMusic(musicFile);
 	}
 	
 	@Override
@@ -496,7 +578,7 @@ public class Snake extends Application {
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("snake");
 			window = primaryStage;
-			window.setScene(new Scene(root, GAME_WIDTH,GAME_HEIGHT));
+			window.setScene(new Scene(root, GAME_WIDTH-70,GAME_HEIGHT+60));
 			primaryStage.show();			
 		} catch(Exception e) {
 			e.printStackTrace();
