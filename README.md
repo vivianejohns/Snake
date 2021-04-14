@@ -10,6 +10,7 @@ next changes:
 - offer more settings like 
     - game size     ✓
     - higher difficulty through obstacles       ✓
+    --> custom choice of obstacle amount
     - higher difficulty through additional food that kills you
 - confirm window when pressing escape / going back to start instead of closing app
 - info window when pressing pause
