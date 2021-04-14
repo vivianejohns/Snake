@@ -14,4 +14,5 @@ next changes:
 - confirm window when pressing escape / going back to start instead of closing app
 - info window when pressing pause
 
-![there should be a picture of the Game](images/snake preview.PNG)
+Preview:
+![there should be a picture of the Game](Images/snake preview.JPG)
