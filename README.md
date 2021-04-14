@@ -1,7 +1,7 @@
 # Snake
 the classic snake game
 
-created followed a tutorial from Christian Gesty and customizing the game now
+created following a tutorial from Christian Gesty and customizing the game now
 
 next changes:
 
@@ -13,3 +13,5 @@ next changes:
     - higher difficulty through additional food that kills you
 - confirm window when pressing escape / going back to start instead of closing app
 - info window when pressing pause
+
+![there should be a picture of the Game](images/snake preview.PNG)
