@@ -14,7 +14,7 @@ next changes:
 - confirm window when pressing escape / going back to start instead of closing app
 - info window when pressing pause
 
-Preview:
+Preview: ongoing game with obstacles
 
 ![there should be a picture of the game](Images/snakePreview.JPG)
 
