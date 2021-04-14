@@ -15,4 +15,6 @@ next changes:
 - info window when pressing pause
 
 Preview:
-![there should be a picture of the Game](Images/snake preview.JPG)
+
+![there should be a picture of the game](Images/snake preview.JPG)
+
