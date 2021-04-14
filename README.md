@@ -16,5 +16,5 @@ next changes:
 
 Preview:
 
-![there should be a picture of the game](Images/snake preview.JPG)
+![there should be a picture of the game](/Images/snake preview.JPG)
 
