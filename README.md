@@ -6,9 +6,9 @@ created following a tutorial from Christian Gesty and customizing the game now
 next changes:
 
 ```diff
-- making the music part work     ✓
++ making the music part work     ✓
+- upgrade the visuals 
 ```
-- upgrade the visuals
 - offer more settings like 
     - game size     ✓
     - higher difficulty through obstacles       ✓
