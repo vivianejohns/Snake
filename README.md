@@ -6,18 +6,18 @@ created following a tutorial from Christian Gesty and customizing the game now
 next changes:
 
 ```diff
-+ making the music part work     ✓
-- upgrade the visuals 
++ making the music part work ✓
+! upgrade the visuals 
++ offer game size settings ✓
++ higher difficulty throu obstacles ✓
+! additional option to come: custom choice of obstacle amount
+! higher difficulty through food that kills you
+! confirm window when pressing escape
++ confirm window when dying
+- bug to fix: speed increases everytime you press back to start
+! info window when pressing pause
+! adding countdown before start
 ```
-- offer more settings like 
-    - game size     ✓
-    - higher difficulty through obstacles       ✓
-     -> additional option to come: custom choice of obstacle amount
-    - higher difficulty through additional food that kills you
-- confirm window when pressing escape / going back to start instead of closing app
-- confirm window when dying (new game/back to start) ✓ -> bug to fix: speed increases everytime you press back to start
-- info window when pressing pause
-- adding countdown before start
 
 Preview: 
 
