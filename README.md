@@ -10,10 +10,12 @@ next changes:
 - offer more settings like 
     - game size     ✓
     - higher difficulty through obstacles       ✓
-     -> custom choice of obstacle amount
+     -> additional option to come: custom choice of obstacle amount
     - higher difficulty through additional food that kills you
 - confirm window when pressing escape / going back to start instead of closing app
+- confirm window when dying (new game/back to start) ✓ -> bug to fix: speed increases everytime you press back to start
 - info window when pressing pause
+- adding countdown before start
 
 Preview: 
 
