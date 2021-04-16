@@ -10,10 +10,10 @@ next changes:
 ! upgrade the visuals 
 + offer game size settings ✓
 + higher difficulty throu obstacles ✓
-! additional option to come: custom choice of obstacle amount
++ custom choice of obstacle amount ✓
 ! higher difficulty through food that kills you
-! confirm window when pressing escape
-+ confirm window when dying
++ confirm window when pressing escape ✓
++ confirm window when dying ✓
 - bug to fix: speed increases everytime you press back to start
 ! info window when pressing pause
 ! adding countdown before start
