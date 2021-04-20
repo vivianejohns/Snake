@@ -15,7 +15,7 @@ next changes:
 + confirm window when pressing escape ✓
 + confirm window when dying ✓
 - bug to fix: speed increases everytime you press back to start
-! info window when pressing pause
++ info window when pressing pause ✓
 ! adding countdown before start
 ```
 
