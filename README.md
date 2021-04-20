@@ -9,7 +9,7 @@ next changes:
 + making the music part work ✓
 ! upgrade the visuals 
 + offer game size settings ✓
-+ higher difficulty throu obstacles ✓
++ higher difficulty throug obstacles ✓
 + custom choice of obstacle amount ✓
 ! higher difficulty through food that kills you
 + confirm window when pressing escape ✓
