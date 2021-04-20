@@ -46,6 +46,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -63,6 +64,7 @@ public class Snake extends Application {
 	private static double speed = 0.2;					//0,2 Sekunden
 	private static boolean isEndless = false;			//ob man durch den Rand kann oder dagegen stösst
 	private static boolean withObstacles = false;		//ob man mit Hindernissen spielt
+	private static boolean continueGame;
 	
 	private Rectangle[] obst;
 	private static int obstacleNumber = 5;				//anzahl der Hindernisse
@@ -560,7 +562,7 @@ public class Snake extends Application {
 			speed = 0.2;
 			isEndless = false;
 			withObstacles = false;
-			window.setScene(new Scene(createStartScene(), GAME_WIDTH-70,GAME_HEIGHT+60));					//!!!!!!jedes mal wenn man zurück zum Start drückt verdoppelt sich die Geschwindigkeit!!
+			window.setScene(new Scene(createStartScene(), GAME_WIDTH-70,GAME_HEIGHT+100));					//!!!!!!jedes mal wenn man zurück zum Start drückt verdoppelt sich die Geschwindigkeit!!
 			window.show();
 			confirmNewGame.close();
 		});
@@ -621,17 +623,35 @@ public class Snake extends Application {
 					}
 				case SPACE:
 					timeLine.pause();
-					mediaPlayer.pause();
-					scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+					mediaPlayer.pause();					
+					Stage pauseInfoStage = new Stage(StageStyle.UNDECORATED);
+					pauseInfoStage.setTitle("Pause");
+					VBox pane = new VBox();
+					Scene pauseInfoScene = new Scene(pane,170,100);
+					Label pausedGame = new Label("Spiel pausiert");
+					pausedGame.setFont(Font.font(18));
+					pausedGame.setTextAlignment(TextAlignment.CENTER);
+					pane.setAlignment(Pos.CENTER);
+					Label scoreLabel = new Label("Score: "+score);
+					scoreLabel.setFont(Font.font(18));
+					Label continueLabel = new Label("Drücke SPACE um weiter zu spielen");
+					continueLabel .setFont(Font.font(10));
+					pane.getChildren().addAll(pausedGame,scoreLabel,continueLabel);
+					pauseInfoStage.setScene(pauseInfoScene);
+					pauseInfoStage.setResizable(false);
+					pauseInfoStage.show();
+					pauseInfoScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 						@Override
 						public void handle(KeyEvent arg0) {
 							if(arg0.getCode() == KeyCode.SPACE) {
 								timeLine.playFromStart();
 								mediaPlayer.play();
+								pauseInfoStage.close();
 								keyPressed(scene);
 							} else if(arg0.getCode() == KeyCode.ESCAPE) {
 								confirmEscape();
-							}
+								pauseInfoStage.close();
+							} 
 						}
 					});
 					break;
@@ -650,7 +670,6 @@ public class Snake extends Application {
 	//Escape bestätigen
 	private void confirmEscape() {
 		timeLine.pause();
-		mediaPlayer.pause();
 		Stage confirmEscapeStage = new Stage();
 		BorderPane pane = new BorderPane();
 		Scene confirmEscapeScene = new Scene(pane,300,150);
@@ -673,7 +692,7 @@ public class Snake extends Application {
 			speed = 0.2;
 			isEndless = false;
 			withObstacles = false;
-			window.setScene(new Scene(createStartScene(), GAME_WIDTH-70,GAME_HEIGHT+60));					//!!!!!!jedes mal wenn man zurück zum Start drückt verdoppelt sich die Geschwindigkeit!!
+			window.setScene(new Scene(createStartScene(), GAME_WIDTH-70,GAME_HEIGHT+100));					//!!!!!!jedes mal wenn man zurück zum Start drückt verdoppelt sich die Geschwindigkeit!!
 			window.show();
 			confirmEscapeStage.close();
 		});
