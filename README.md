@@ -17,6 +17,7 @@ next changes:
 - bug to fix: speed increases everytime you press back to start
 + info window when pressing pause ✓
 ! adding countdown before start
+- bug to fix: food is spawning underneath the snakes tail sometimes
 ```
 
 Preview: 
